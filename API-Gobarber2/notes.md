@@ -7,6 +7,7 @@
 6. npm install bcryptjs
 7. npm install jsonwebtoken
 8. npm install yup
+9. npm i multer
 
 # Sequelize CLI
 npx sequelize db:migrate:undo:all
@@ -20,6 +21,7 @@ npx sequelize migration:create --name=create-users
 3. jwt - criptografia 
 4. nodemon - reinicia o servidor express 
 5. yup - Biblioteca de Schema Validation (Valida se as requisições estão sendo passadas corretamente)
+6. Multer - biblioteca que lida com arquivos físicos
 
 
 
@@ -33,3 +35,6 @@ npx sequelize migration:create --name=create-users
 6. Criar o Loader de Model / Editar
 7. Criar Controller
 8. add route
+
+netstat -a -n -o   --- Lista o processo
+taskkill /PID processo /F  --- Mata o Processo
