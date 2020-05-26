@@ -38,3 +38,12 @@ npx sequelize migration:create --name=create-users
 
 netstat -a -n -o   --- Lista o processo
 taskkill /PID processo /F  --- Mata o Processo
+
+
+
+# Processo Básico na criação de uma Rota
+
+1. migration - Verificar a necessidade de criar uma tabela no banco de dados
+2. model - para inserir os valores na tabela crie o model que será manipulado pelo controller
+3. model import - importe o model para sua config de database(index na pasta database)
+4. controller - crie o controller que cuidará das regras de negócio da aplicação
