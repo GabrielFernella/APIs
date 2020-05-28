@@ -19,7 +19,7 @@ module.exports = {
         references: { model: 'users', key: 'id'},
         onUpdate: 'CASCADE', //Se o usuário for alterado
         onDelete: 'SET NULL', //Para guardar um histórico
-        allowNull: false
+        allowNull: true
       },
       //Referencia do provider escolhido para o agendamento
       provider_id: {
@@ -27,12 +27,11 @@ module.exports = {
         references: { model: 'users', key: 'id'},
         onUpdate: 'CASCADE', //Se o usuário for alterado
         onDelete: 'SET NULL', //Para guardar um histórico
-        allowNull: false
+        allowNull: true
       },
       //Caso haja algum cancelamento
       canceled_at: {
         type: Sequelize.DATE,
-        allowNull: true,
       },
       created_at: {
         type: Sequelize.DATE,
