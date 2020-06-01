@@ -2,8 +2,14 @@ import Appointment from '../models/Appointment';
 import User from '../models/User';
 import File from '../models/File';
 
-import {startOfHour,parseISO, isBefore} from 'date-fns';
+import {startOfHour,parseISO, isBefore, format, subHours} from 'date-fns';
+//subhous - Busca valores anteriores ao horário previsto
+//parseISO - Converte uma string em data para manipulação
+//startOfHour - Começa apartir do inicio da hora referenciada
+import pt from 'date-fns/locale/pt'; //para traduzir o mes
 import * as Yup from 'yup';
+
+import Notification from '../schemas/Notification';
 
 class AppointmentController {
 
@@ -87,6 +93,40 @@ class AppointmentController {
             date: hourStart, //pegara o inicio da hora que está sendo agendado
         })
 
+        //Notify Provider with mongoDB--------------------------------------
+        const user = await User.findByPk(req.userId);
+        const formattedDate = format(hourStart, 
+            " 'dia' dd 'de' MMMM', às'  H:mm'h'",
+            { locale: pt}
+            ); //Formatando a data
+
+        //Create notification
+        await Notification.create({
+            content: `Novo agendamento de ${user.name} para ${formattedDate}`,
+            user: provider_id,
+        })
+
+        return res.json(appointment);
+    }
+
+    async delete(req, res) {
+        const appointment = await Appointment.findByPk(req.params.id)
+
+        //Verificando se o usuário que está cancelando não é o mesmo que está solicitando o cancelamento
+        if (appointment.user_id != req.userId){
+            return res.status(401).json({ error: "Tou don't permission to cancel this appointment"})
+        }
+
+        //manipulando horas para ter um limite de hora para o cancelamento
+        const dateWithSub = subHours(appointment.date, 2);
+
+        if(isBefore(dateWithSub, new Date() )) {
+            return res.status(401).json({error: 'You can only cancel appointment 2 hours in advance'})
+        }
+
+        appointment.canceled_at = new Date();
+        await appointment.save();
+
         return res.json(appointment);
     }
 
@@ -94,5 +134,4 @@ class AppointmentController {
 
 export default new AppointmentController();
 
-
-//Aula 09
+//Aula 15

@@ -1,4 +1,5 @@
 import Sequelize from 'sequelize';
+import mongoose from 'mongoose';
 
 import databaseConfig from '../config/database';
 
@@ -11,6 +12,7 @@ const models = [User,File, Appointment];
 class Database {
     constructor(){
         this.init();
+        this.mongo();
     }
 
     init(){
@@ -20,7 +22,16 @@ class Database {
             .map(model => model.init(this.connection)) //verifica todos os models do projeto 
             .map(model => model.associate && model.associate(this.connection.models)) //realiza um map te dodas as associações do projeto
     }
+
+    mongo(){
+        this.mongoConnection = mongoose.connect(
+            'mongodb://localhost:27017/gobarber',
+            {useNewUrlParser: true, useFindAndModify: true, useUnifiedTopology: true}
+        )
+    }
 }
 
 
 export default new Database();
+
+//Aula 11
